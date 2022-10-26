@@ -103,7 +103,7 @@ class Client {
     }
 
     effectuer_virement(destinataire: Client, montant: number): boolean {
-        const op = new Virement(this, montant, "externe", destinataire);
+        const op = new Virement(this, montant, destinataire);
         return this.banque.execute(op);
     }
 }
@@ -207,13 +207,33 @@ class Retrait extends OperationBanquaire {
 
 class Virement extends OperationBanquaire {
 
-    typeeffectuer_Virement: string;
-    date: Date;
-    clientDestinataireVirement: Client;
-    dateExecution: Date;
+    private _date: number;
+    public get date(): number {
+        return this._date;
+    }
+    public set date(value: number) {
+        this._date = value;
+    }
 
-    constructor(client: Client, montant: number, typeeffectuer_Virement: string, clientDestinataireVirement?: Client, dateExecution?: Date) {
+    private _clientDestinataireVirement: Client;
+    public get clientDestinataireVirement(): Client {
+        return this._clientDestinataireVirement;
+    }
+    public set clientDestinataireVirement(value: Client) {
+        this._clientDestinataireVirement = value;
+    }
+    private _dateExecution: Date;
+    public get dateExecution(): Date {
+        return this._dateExecution;
+    }
+    public set dateExecution(value: Date) {
+        this._dateExecution = value;
+    }
+
+    constructor(client: Client, montant: number, clientDestinataireVirement?: Client, dateExecution?: Date) {
         super(client, montant);
+
+        this.date = Date.now();
 
         //si le destinataire est renseigné
         if (clientDestinataireVirement !== undefined)
@@ -222,8 +242,6 @@ class Virement extends OperationBanquaire {
             //sinon le destinataire est client lui-même : virement de compte à compte
             //TODO: gérer la possibilité pour un client de disposer de plusieurs comptes
             this.clientDestinataireVirement = this.client;
-
-        this.typeeffectuer_Virement = typeeffectuer_Virement;
 
         if (dateExecution !== undefined)
             this.dateExecution = dateExecution;
