@@ -34,7 +34,7 @@ _Les commandes npm ci-dessous doivent toutes être exécutées depuis le répert
 
 **Alexandre Leroux**
 
-Développeur programme (web & mobile)<br/>
+Développeur logiciel (web & mobile)<br/>
 Enseignant / Formateur
 
 Mail : alex@sherpa.one<br/>
